@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using Microsoft.AspNetCore.Authorization;
+
 namespace FamilyCalendarDotNet.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class CalendarEventsController : Controller
 {
     // This is the MySQL connection that will get injected
@@ -23,7 +26,6 @@ public class CalendarEventsController : Controller
         connection.Close();
     }
 
-
     /*
      *  This is a GET mapping for /GetCalendarEvents
      */
@@ -32,11 +34,13 @@ public class CalendarEventsController : Controller
     {
         try
         {
+            // Validate the API key
+                
             // Open the MySQL connection asynchronously
             await connection.OpenAsync();
 
             // Create a MySQL command for selecting all events
-            using var command = new MySqlCommand("SELECT * FROM events;", this.connection);
+            using var command = new MySqlCommand("SELECT * FROM events;", connection);
 
             // Execute the MySQL command and read the results
             using var reader = await command.ExecuteReaderAsync();
@@ -60,7 +64,11 @@ public class CalendarEventsController : Controller
         {
             Console.WriteLine("There was an error while retrieving the calendar events.");
             Console.WriteLine(err.Message);
-            return new JsonResult(err.Message);
+            return new JsonResult(new Dictionary<string, string>(){
+                {
+                    "error", err.Message
+                }
+            });
         }
     }
 
@@ -108,7 +116,11 @@ public class CalendarEventsController : Controller
         {
             Console.WriteLine("There was an error while retrieving the calendar events.");
             Console.WriteLine(err.Message);
-            return new JsonResult(err.Message);
+            return new JsonResult(new Dictionary<string, string>(){
+                {
+                    "error", err.Message
+                }
+            });
         }
     }
 
@@ -138,14 +150,22 @@ public class CalendarEventsController : Controller
             // Wait for the query to be executed
             await cmd.ExecuteNonQueryAsync();
 
-            // Create a MySQL comand for adding a 
-            return new JsonResult("The event has been added.");
+            // Let the user know the event was added.
+            return new JsonResult(new Dictionary<string, string>(){
+                {
+                    "success" , "The event has been added."
+                }
+            });
         }
         catch (Exception err)
         {
             Console.WriteLine("There was an error while attempting to add an event.");
             Console.WriteLine(err.Message);
-            return new JsonResult(err.Message);
+            return new JsonResult(new Dictionary<string, string>() {
+                {
+                    "error" , err.Message
+                }
+            });
         }
     }
 
@@ -169,14 +189,20 @@ public class CalendarEventsController : Controller
 
             await cmd.ExecuteNonQueryAsync();
 
-            return new JsonResult("Event has been deleted");
+            return new JsonResult(new Dictionary<string, string>(){
+                {
+                    "success", "Event has been deleted"
+                }
+            });
         }catch(Exception err)
         {
             Console.WriteLine("There was an error while deleting the event with id " + id);
             Console.WriteLine(err.Message);
-            return new JsonResult(err.Message);
+            return new JsonResult(new Dictionary<string, string>(){
+                {
+                    "error", err.Message
+                }
+            });
         }
     }
 }
-
-
