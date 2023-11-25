@@ -18,13 +18,14 @@ public class UsersController : Controller
     // This is the MySQL connection that will get injected
     readonly MySqlConnection connection;
     readonly IConfiguration iConfig;
-
+    readonly JWTTokenBlacklistingService _tokenBlacklistingService;
     // This is the constructor with the injected MySQL connection
-    public UsersController(MySqlConnection conn, IConfiguration iconf)
+    public UsersController(MySqlConnection conn, IConfiguration iconf, JWTTokenBlacklistingService ts)
     {
         // Set the readonly connection
         connection = conn;
         iConfig = iconf;
+        _tokenBlacklistingService = ts;
     }
 
     // This is the destructor
@@ -233,6 +234,38 @@ public class UsersController : Controller
             return new JsonResult(new Dictionary<string, string>(){
                 {
                     "error", err.Message
+                }
+            });
+        }
+    }
+
+    /*
+     * Endpoint for logging out and blacklisting the JWT token
+     */
+    [HttpPost]
+    [Route("Logout")]
+    public JsonResult Logout(string token)
+    {
+        try
+        {
+            //Console.WriteLine($"Blacklisting the following token {token}");
+            //_tokenBlacklistingService.AddToBlacklist(token);
+            //Console.WriteLine("The token has been blacklisted.");
+
+            return new JsonResult(new Dictionary<string, string>()
+            {
+                {
+                    "success", "Successfully logged out."
+                }
+            });
+        }catch(Exception e)
+        {
+            Console.WriteLine($"Found an error while attempting to logout and blacklist {token}");
+            Console.WriteLine(e.Message);
+            return new JsonResult(new Dictionary<string, string>()
+            {
+                {
+                    "error", e.Message
                 }
             });
         }

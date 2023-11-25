@@ -3,6 +3,7 @@ using MySqlConnector;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FamilyCalendarDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+// Add JWT Token Blacklisting Service
+builder.Services.AddTransient<JWTTokenBlacklistingService>();
     
 
 var app = builder.Build();
@@ -79,6 +83,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// Add the JWT Token Blacklisting service middleware
+app.UseMiddleware<JWTTokenBlacklistMiddleware>();
 
 app.MapControllers();
 
