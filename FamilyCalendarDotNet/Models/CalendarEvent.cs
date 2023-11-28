@@ -1,4 +1,7 @@
-﻿namespace FamilyCalendarDotNet
+﻿/*
+ * This is the model for a single calendar event item
+ */
+namespace FamilyCalendarDotNet
 {
 	public class CalendarEvent
 	{

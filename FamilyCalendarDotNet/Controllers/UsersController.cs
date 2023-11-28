@@ -41,44 +41,84 @@ public class UsersController : Controller
     [HttpPost]
     [AllowAnonymous]
     [Route("RegisterNewUser")]
-    public async Task<JsonResult> RegisterNewUser(DateTime registrationDate,string username, string password)
+    public async Task<JsonResult> RegisterNewUser(UserRegistrationDTO user)
     {
         try
         {
-            // Hash the incoming password
-            string hashed_pass = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: new byte[]{1,2,3,4,5,6,7,8,9,0},
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8
-            ));
-
-            Console.WriteLine($"Hashed Password for {username}: {hashed_pass}");
-
-            // Open the MySQL connection asynchronously
-            await connection.OpenAsync();
-
-            // Create a new sql command
-            MySqlCommand cmd = new()
+            if (ModelState.IsValid)
             {
-                Connection = connection, // Set it's connection to the injected connection
-                // And set the command text to the query
-                CommandText = "INSERT INTO users(username,password,registrationDate) VALUES(?username,?password,?registrationDate)"
-            };
-
-            // Replace the parameters with the incoming data
-            cmd.Parameters.Add("?registrationDate", MySqlDbType.DateTime).Value = registrationDate;
-            cmd.Parameters.Add("?username", MySqlDbType.VarChar).Value = username;
-            cmd.Parameters.Add("?password", MySqlDbType.VarChar).Value = hashed_pass;
-
-            await cmd.ExecuteNonQueryAsync();
-
-            return new JsonResult(new Dictionary<string, string>(){
+                // Check that the username is available first and there's no users
+                // With that username already
+                if (await UsernameIsAvaialable(user.Username))
                 {
-                    "success", "User has been registered successfully."
+                    // Check that the password and confirmation passwords match
+                    if (user.Password == user.PasswordConfirmation)
+                    {
+                        // Hash the incoming password
+                        string hashed_pass = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                            password: user.Password,
+                            salt: new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 },
+                            prf: KeyDerivationPrf.HMACSHA1,
+                            iterationCount: 10000,
+                            numBytesRequested: 256 / 8
+                        ));
+
+                        Console.WriteLine($"Hashed Password for {user.Username}: {hashed_pass}");
+
+                        // Open the MySQL connection asynchronously
+                        //await connection.OpenAsync();
+
+                        // Create a new sql command
+                        MySqlCommand cmd = new()
+                        {
+                            Connection = connection, // Set it's connection to the injected connection
+                            // And set the command text to the query
+                            CommandText = "INSERT INTO users(fullname,email,username,password,registrationDate) VALUES(?fullname,?email,?username,?password,?registrationDate)"
+                        };
+
+                        // Replace the parameters with the incoming data
+                        cmd.Parameters.Add("?fullname", MySqlDbType.VarChar).Value = user.FullName;
+                        cmd.Parameters.Add("?email", MySqlDbType.VarChar).Value = user.Email;
+                        cmd.Parameters.Add("?registrationDate", MySqlDbType.DateTime).Value = user.RegistrationDate;
+                        cmd.Parameters.Add("?username", MySqlDbType.VarChar).Value = user.Username;
+                        cmd.Parameters.Add("?password", MySqlDbType.VarChar).Value = hashed_pass;
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return new JsonResult(new Dictionary<string, string>(){
+                            {
+                                "success", "User has been registered successfully."
+                            }
+                        });
+                    }
+                    else
+                    {
+                        return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "error", "The password and password confirmation do not match. Please check your passwords and try again."
+                            }
+                        });
+                    }
                 }
-            });
+                else
+                {
+                    return new JsonResult(new Dictionary<string, string>() {
+                        {
+                            "error", "The username provided is already taken. Please either recover your existing account or create a new account with a different username."
+                        }
+                    });
+                }
+            }
+            else
+            {
+                // Get the validation results from the ModelState and return an error
+                return new JsonResult(new Dictionary<string, string>(){
+                    {
+                        "error", ModelState.ValidationState.ToString()
+                    }
+                });
+            }
         }
         catch (Exception err)
         {
@@ -91,6 +131,51 @@ public class UsersController : Controller
             });
         }
     }
+
+    /*
+     * This is a function for checking if a username is already taken
+     */
+    private async Task<bool> UsernameIsAvaialable(string username)
+    {
+        try
+        {
+            // Open the MySQL connection asynchronously
+            await connection.OpenAsync();
+
+            // Create a new sql command
+            MySqlCommand cmd = new()
+            {
+                Connection = connection, // Set it's connection to the injected connection
+                // And set the command text to the query
+                CommandText = "SELECT * FROM users WHERE username=?username LIMIT 1;"
+            };
+
+            // Replace the parameters with the incoming data
+            cmd.Parameters.Add("?username", MySqlDbType.VarChar).Value = username;
+
+
+            // Execute the MySQL command and read the results
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            // If there were some results
+            if (reader.HasRows)
+            {
+                // Then return false because the username is taken
+                return false;
+            }
+            else
+            {
+                // Otherwise return true because the username is available.
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"There was an error while checking the username {username}");
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }   
 
     /*
      * This is a function for generating a JWT token with some Claims for the given userId

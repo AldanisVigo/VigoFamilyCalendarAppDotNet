@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aeda, 2022-05-15)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.6154036"
+     inkscape:cx="366.4262"
+     inkscape:cy="558.17028"
+     inkscape:window-width="1512"
+     inkscape:window-height="917"
+     inkscape:window-x="0"
+     inkscape:window-y="65"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient470">
+      <stop
+         style="stop-color:#ff6600;stop-opacity:1;"
+         offset="0"
+         id="stop466" />
+      <stop
+         style="stop-color:#ff6600;stop-opacity:0;"
+         offset="1"
+         id="stop468" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient470"
+       id="linearGradient472"
+       x1="108.34353"
+       y1="0.8598693"
+       x2="109.63334"
+       y2="119.0919"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient472);stroke-width:0.264583;fill-opacity:1"
+       id="rect404"
+       width="209.37817"
+       height="119.52183"
+       x="0"
+       y="-0.42993462"
+       ry="11.47228"
+       inkscape:export-filename="jwts.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.1111px;font-family:Chalkduster;-inkscape-font-specification:'Chalkduster, Normal';fill:#ffe6d5;stroke-width:0.264583"
+       x="23.646404"
+       y="34.824703"
+       id="text236"><tspan
+         sodipodi:role="line"
+         id="tspan234"
+         x="23.646404"
+         y="34.824703"
+         style="fill:#ffe6d5;stroke-width:0.264583">You do not simply</tspan><tspan
+         sodipodi:role="line"
+         x="23.646404"
+         y="52.463577"
+         style="fill:#ffe6d5;stroke-width:0.264583"
+         id="tspan599">   &quot;Log Out&quot; with </tspan><tspan
+         sodipodi:role="line"
+         x="23.646404"
+         y="76.459747"
+         style="fill:#ffe6d5;stroke-width:0.264583"
+         id="tspan601">        <tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Chalkduster;-inkscape-font-specification:'Chalkduster, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal"
+   id="tspan603">JWT</tspan></tspan></text>
+  </g>
+</svg>

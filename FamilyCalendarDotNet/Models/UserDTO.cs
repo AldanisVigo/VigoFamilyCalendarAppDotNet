@@ -1,4 +1,8 @@
-﻿namespace FamilyCalendarDotNet.Models
+﻿/*
+ * This is the model of a single user data transfer object.
+ * Used for representing the structure of the body of our HTTP requests.
+ */
+namespace FamilyCalendarDotNet.Models
 {
 	public class UserDTO
 	{

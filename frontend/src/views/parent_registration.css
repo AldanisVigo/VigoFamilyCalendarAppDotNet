@@ -1,0 +1,10 @@
+.parent_registration_main{
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    vertical-align: center;
+    background: white;
+    border-radius: 30px;
+    padding: 10px;
+}

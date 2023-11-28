@@ -1,13 +1,15 @@
 import './App.css'
 import Login from './components/login'
-// import AppContext from './context/AppContext'
-// import { useContext } from 'react'
+import Header from './components/header'
+import Background from './components/background'
 const App = () => {
-  // const {token} = useContext(AppContext);
-  return <div className="main">
-    {/* {token} */}
-    <Login/>
-  </div>
+  return <>
+    <Header/>
+    <Background/>
+    <div className="main flex items-center">
+      <Login/>
+    </div>
+  </>
 
 }
 

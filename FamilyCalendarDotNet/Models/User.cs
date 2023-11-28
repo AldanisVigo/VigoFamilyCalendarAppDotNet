@@ -1,4 +1,8 @@
-﻿namespace FamilyCalendarDotNet
+﻿/*
+ *  This is the model for a single user 
+ */
+
+namespace FamilyCalendarDotNet
 {
 	public class User 
 	{
