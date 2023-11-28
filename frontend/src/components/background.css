@@ -1,8 +1,8 @@
-#bg-wrap{
-    position: absolute;
+#flowing_background{
+    position: absolute !important;
     left: 0;
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -20;
+    z-index: 0;
 }

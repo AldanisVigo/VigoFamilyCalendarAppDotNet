@@ -51,9 +51,13 @@ const Login = () => {
           if(setToken != null){
             setToken(response.token)
             localStorage.setItem('token',response.token)
+            navigate("/home")
 
           }else{
-            window.alert("setToken is null")
+            // window.alert("setToken is null")
+            setModalTitle("Error Found")
+            setModalContent("Login was unsuccessful.")
+            setShowModal(true)
           }
         }
 
@@ -66,7 +70,7 @@ const Login = () => {
         console.log("Error while attempting to log in")
         console.log(err)
         setModalTitle("Error Found")
-        setModalContent(err)
+        setModalContent(err.message)
         setShowModal(true)
       }
     }
@@ -102,7 +106,7 @@ const Login = () => {
           <button onClick={attemptLogin} type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
         </div>
       </form>
-      <p className="mt-10 text-center text-sm text-white">
+      <p className="mt-10 text-center text-sm text-white z-0">
           Family Member?&nbsp;
           <br/>
           <a href="/register" className="font-semibold leading-6 text-grey-600 hover:text-grey">

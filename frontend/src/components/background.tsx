@@ -2,7 +2,7 @@ import './background.css'
 
 const Background = () => {
     return <>
-        <div id="bg-wrap">
+        <div id="flowing_background" className="z-0">
             <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
             <defs>
             <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stopColor="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stopColor="rgba(255, 0, 255, 0)"></stop></radialGradient>
@@ -34,7 +34,7 @@ const Background = () => {
             </rect>
             </svg>
         </div>
-        <div id="bg-wrap" style={{backgroundColor: 'rgba(0,0,0,0.7)'}}>
+        <div id="flowing_background" style={{backgroundColor: 'rgba(0,0,0,0.7)'}}>
 
         </div>
     </>

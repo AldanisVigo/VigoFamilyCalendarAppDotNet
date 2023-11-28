@@ -8,12 +8,13 @@ import { createBrowserRouter,
 } from "react-router-dom";
 import Registeration from './views/registration.tsx'
 import PasswordRecovery from './views/password_recovery.tsx'
+import Login from './views/Login.tsx'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Login/>,
   },
   {
     path : "/register",
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path : "/recover",
     element : <PasswordRecovery/>
+  },
+  {
+    path : '/home',
+    element : <App/>
   }
 ]);
 

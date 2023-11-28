@@ -2,16 +2,19 @@ import './header.css'
 import logo from '../assets/logo.svg';
 import { useState, useContext } from 'react';
 import AppContext from '../context/AppContext';
-
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
     const { token,setToken } = useContext(AppContext)
     const [appTitle] = useState("Family Calendar v1.0")
+    const navigate = useNavigate()
+
     const signOut = () => {
         if(setToken){
             // Remove the token from localstorage
             localStorage.removeItem('token')
             // And from the app context
             setToken(null)
+            navigate("/")
         }
     }
 

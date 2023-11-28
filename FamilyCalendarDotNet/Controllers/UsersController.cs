@@ -7,6 +7,8 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using FamilyCalendarDotNet.Models;
+using FamilyCalendarDotNet.Utilities;
+using FamilyCalendarDotNet.Interfaces;
 
 namespace FamilyCalendarDotNet.Controllers;
 
@@ -18,14 +20,15 @@ public class UsersController : Controller
     // This is the MySQL connection that will get injected
     readonly MySqlConnection connection;
     readonly IConfiguration iConfig;
-    readonly JWTTokenBlacklistingService _tokenBlacklistingService;
+    private readonly IMailService mailService;
+
     // This is the constructor with the injected MySQL connection
-    public UsersController(MySqlConnection conn, IConfiguration iconf, JWTTokenBlacklistingService ts)
+    public UsersController(MySqlConnection conn, IConfiguration iconf, IMailService ms)
     {
         // Set the readonly connection
         connection = conn;
         iConfig = iconf;
-        _tokenBlacklistingService = ts;
+        mailService = ms;
     }
 
     // This is the destructor
@@ -333,6 +336,7 @@ public class UsersController : Controller
     {
         try
         {
+            // This is handled by a middleware service now.
             //Console.WriteLine($"Blacklisting the following token {token}");
             //_tokenBlacklistingService.AddToBlacklist(token);
             //Console.WriteLine("The token has been blacklisted.");
@@ -375,6 +379,147 @@ public class UsersController : Controller
                 "token", token
             }
         });
+    }
+
+    /*
+     *  Endpoint for sending recovery link
+     */
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Recover")]
+    public async Task<JsonResult> SendRecovery(string identifier)
+    {
+        try
+        {
+            // Check if the identifier is a username
+            var identifierIsAUsername = !(await UsernameIsAvaialable(identifier));
+
+
+            if (identifierIsAUsername)
+            {
+                // The identifier is a username
+                // Query for the email
+
+                // Create a new sql command
+                MySqlCommand cmd = new()
+                {
+                    Connection = connection, // Set it's connection to the injected connection
+                                             // And set the command text to the query
+                    CommandText = "SELECT * FROM users WHERE username=?username LIMIT 1;"
+                };
+
+                // Replace the parameters with the incoming data
+                cmd.Parameters.Add("?username", MySqlDbType.VarChar).Value = identifier;
+
+
+                // Execute the MySQL command and read the results
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                // If there were some results
+                if (reader.HasRows)
+                {
+                    // Read the result
+                    reader.Read();
+
+                    // Grab the data out of the result
+                    string db_email = reader.GetString("email");
+                    string db_fullName = reader.GetString("fullName");
+
+                    // This identifier is a valid email address
+                    if (mailService.SendMail(
+                        new MailData()
+                        {
+                            EmailSubject = "Account Recovery Link",
+                            EmailBody = "Some generated link here.",
+                            EmailToId = db_email,
+                            EmailToName = db_fullName
+                        })
+                    )
+                    {
+                        return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "success", "We've sent you a recovery email. Please click the link included to recover your account."
+                            }
+                        });
+                    }
+                    else
+                    {
+                        return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "error", "There was an error while sending you the recovery link. Please try again later."
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    return new JsonResult(new Dictionary<string, string>()
+                    {
+                        {
+                            "error" , "Username provided does not belong to any active accounts."
+                        }
+                    });
+                }
+            }
+            else
+            {
+                // The identifier is most likely an email address.
+                if (EmailValidator.IsEmailValid(identifier))
+                {
+                    Console.WriteLine("The identifier provided is an email.");
+                    // This identifier is a valid email address
+                    if (mailService.SendMail(
+                        new MailData()
+                        {
+                            EmailSubject = "Account Recovery Link",
+                            EmailBody = "Some generated link here.",
+                            EmailToId = identifier,
+                            EmailToName = ""
+                        })
+                    )
+                    {
+                        return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "success", "We've sent you a recovery email. Please click the link included to recover your account."
+                            }
+                        });
+                    }
+                    else
+                    {
+                        return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "error","There was an error while sending you the recovery link. Please try again later."
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    return new JsonResult(new Dictionary<string, string>()
+                        {
+                            {
+                                "error", "The email provided is not valid."
+                            }
+                        });
+                }
+            }
+
+            //return new JsonResult("");
+        }catch(Exception e)
+        {
+            Console.WriteLine("There was an error while attempting to send a recovery link.");
+            Console.WriteLine(e.Message);
+            return new JsonResult(new Dictionary<string, string>()
+            {
+                {
+                    "error" , e.Message
+                }
+            });
+        }
     }
 }
 

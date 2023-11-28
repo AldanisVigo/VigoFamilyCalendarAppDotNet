@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FamilyCalendarDotNet;
+using FamilyCalendarDotNet.Models;
+using FamilyCalendarDotNet.Interfaces;
+using FamilyCalendarDotNet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,7 +62,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add JWT Token Blacklisting Service
 builder.Services.AddTransient<JWTTokenBlacklistingService>();
-    
+
+// Add Mail Settings
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+// Add the email service
+builder.Services.AddTransient<IMailService, MailService>();
+
+
 
 var app = builder.Build();
 
