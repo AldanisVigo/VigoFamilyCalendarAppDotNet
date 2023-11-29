@@ -54,14 +54,16 @@ const App = () => {
           );
     
           return (
-            <ul className="calendar-todo-list">
-              {displayList.map((item, index) => (
-                <li key={index}>
-                  <Badge /> <b>{item.time}</b> - {item.title}
-                </li>
-              ))}
-              {moreCount ? moreItem : null}
-            </ul>
+            <div className="overflow-scroll">
+                <ul className="calendar-todo-list text-xs">
+                {displayList.map((item, index) => (
+                    <li key={index}>
+                    <Badge /> <b>{item.time}</b> - {item.title}
+                    </li>
+                ))}
+                {moreCount ? moreItem : null}
+                </ul>
+            </div>
           );
         }
     

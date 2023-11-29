@@ -7,6 +7,33 @@ const PasswordRecovery = () => {
     const [forgotUsername,setForgotUsername] = useState(false)
     const [identifier,setIdentifier] = useState('')
     const navigate = useNavigate()
+    
+    const requestRecoveryLink = async () => {
+        if(identifier){
+            const request = await fetch(`https://localhost:7283/Users/Recover?identifier=${identifier}`,{
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                }
+            })
+
+            const response = await request.json();
+
+            console.log(response)
+
+            if('error' in response){
+                window.alert(response.error)
+            }else if('success' in response){
+                window.alert(response.success)
+                setTimeout(()=>{
+                    navigate('/')
+                },2000)
+            }
+        }else{
+            window.alert(`Please enter a valid ${forgotUsername ? 'email' : 'username'} before clicking the Send Link button.`)
+        }
+    }
+
     return <>
         <Header/>
         <Background/>
@@ -25,7 +52,7 @@ const PasswordRecovery = () => {
                             <button className="bg-blue-500 hover:bg-orange-700 mr-4 text-white font-bold py-2 px-4 rounded" onClick={()=>navigate("/")}>Cancel</button>
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=>alert("You can only recover your account if you know the username or email associated with it. If you can't remember the information please contact Customer Support.")}>Forgot Email</button>
                         </div>}
-                        {identifier && <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send me Link</button>}
+                        {identifier && <button onClick={requestRecoveryLink} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send me Link</button>}
                     </div>
                 </div>
             </div>  

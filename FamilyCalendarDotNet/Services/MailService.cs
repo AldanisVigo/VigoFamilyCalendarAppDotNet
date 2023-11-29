@@ -30,6 +30,7 @@ public class MailService : IMailService
 
             BodyBuilder emailBodyBuilder = new()
             {
+                HtmlBody = mailData.HtmlEmailBody,
                 TextBody = mailData.EmailBody
             };
 

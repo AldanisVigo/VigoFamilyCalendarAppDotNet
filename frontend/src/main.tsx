@@ -9,6 +9,7 @@ import { createBrowserRouter,
 import Registeration from './views/registration.tsx'
 import PasswordRecovery from './views/password_recovery.tsx'
 import Login from './views/Login.tsx'
+import CompletePasswordRecovery from './views/complete_password_recovery.tsx'
 
 
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path : "/recover",
     element : <PasswordRecovery/>
+  },
+  {
+    path : '/complete_recovery',
+    element : <CompletePasswordRecovery/>
   },
   {
     path : '/home',

@@ -1,40 +1,76 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './parent_registration.css'
+import CustomModalDialog from '../components/custom_modal_dialog'
 
 const ParentRegistration = () => {
     // const {token} = useContext(AppContext);
-    const [fullname,setFullName] = useState<string | number | readonly string[] | undefined>()
-    const [email,setEmail] = useState<string | number | readonly string[] | undefined>()
-    const [username,setUsername] = useState<string | number | readonly string[] | undefined>()
-    const [password,setPassword] = useState<string | number | readonly string[] | undefined>()
-    const [passwordConf,setPasswordConf] = useState<string | number | readonly string[] | undefined>()
+    const [fullname,setFullName] = useState<string | number | readonly string[] | undefined>("")
+    const [email,setEmail] = useState<string | number | readonly string[] | undefined>("")
+    const [username,setUsername] = useState<string | number | readonly string[] | undefined>("")
+    const [password,setPassword] = useState<string | number | readonly string[] | undefined>("")
+    const [passwordConf,setPasswordConf] = useState<string | number | readonly string[] | undefined>("")
+    const [showDialog,setShowDialog] = useState<boolean>(false)
+    const [dialogTitle,setDialogTitle] = useState<string | undefined | null>("")
+    const [dialogContent,setDialogContent] = useState<string | undefined | null>()
+
     const navigate = useNavigate();
 
     const attemptRegister = async (e:any) => {
         e.preventDefault();
-        const request = await fetch(`https://localhost:7283/Users/RegisterNewUser`,{
-            method : 'POST',
-            headers : {
-                "Content-Type" : "application/json",
-                // "Authorization" : `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "username" : username, // Include the username 
-                "password" : password, // And the password
-                "passwordConfirmation" : passwordConf,
-                "FullName" : fullname,
-                "email" : email,
-                "registrationDate" : (new Date()).toISOString()
+        try{
+            const request = await fetch(`https://localhost:7283/Users/RegisterNewUser`,{
+                method : 'POST',
+                headers : {
+                    "Content-Type" : "application/json",
+                    // "Authorization" : `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    "username" : username, // Include the username 
+                    "password" : password, // And the password
+                    "passwordConfirmation" : passwordConf,
+                    "FullName" : fullname,
+                    "email" : email, 
+                    "registrationDate" : (new Date()).toISOString(),
+                    "userAccountType": 0
+                })
             })
-        })
 
-        const response = await request.json();
+            const response = await request.json();
 
-        console.log(response)
+            // If we get an error in the response
+            if('error' in response){
+                // Show the error message
+                setDialogTitle("Error Found")
+                setDialogContent(response.error)
+                setShowDialog(true)
+                // But if we get a success in the response
+            }else if('success' in response){
+                // Show the success message
+                setDialogTitle("Success")
+                setDialogContent(response.success)
+                setShowDialog(true)
+
+                //Wait four seconds and send them to login page
+                setTimeout(()=>{
+                    navigate('/')
+                },4000)
+            }else if('errors' in response){
+                const msg = response.errors[''].join(',')
+                setDialogTitle("Errors Found")
+                setDialogContent(msg)
+                setShowDialog(true)
+            }
+
+            console.log(response)
+        }catch(err:any){
+            console.log(err['errors'][''])
+        }
     }
 
     return <div className="parent_registration_main">
+        <CustomModalDialog content={dialogContent} title={dialogTitle} showModal={showDialog} setShowModal={setShowDialog} className="z-1"/>
+
         <form className="space-y-6">
             <div className="text-4xl font-extrabold dark:text-dark">Parents</div>
             <p>
@@ -86,7 +122,6 @@ const ParentRegistration = () => {
         </form>
         <br/>
         <button onClick={()=>{navigate("/")}} type="button">Cancel and Return to Login</button>
-
     </div>
 }
 

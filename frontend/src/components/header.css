@@ -9,3 +9,8 @@
     top: 0;
     z-index: 100;
 }
+
+/* Make the cells of the Calendar scroll in the y direction when it overflows */
+.rs-calendar-table-cell-content {
+    overflow-y: scroll !important;
+}
