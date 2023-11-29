@@ -2,8 +2,8 @@
     background-color: rgba(0,0,128,0.5);
     width: 100vw;
     height: 80px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    /* border-bottom-left-radius: 30px; */
+    /* border-bottom-right-radius: 30px; */
     text-align: left;
     position: fixed;
     top: 0;

@@ -121,7 +121,7 @@ const ParentRegistration = () => {
             </div>
         </form>
         <br/>
-        <button onClick={()=>{navigate("/")}} type="button">Cancel and Return to Login</button>
+        <button onClick={()=>{navigate("/")}} type="button">Cancel and Return to Home</button>
     </div>
 }
 

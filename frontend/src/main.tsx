@@ -10,12 +10,12 @@ import Registeration from './views/registration.tsx'
 import PasswordRecovery from './views/password_recovery.tsx'
 import Login from './views/Login.tsx'
 import CompletePasswordRecovery from './views/complete_password_recovery.tsx'
-
+import Landing from './views/landing.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login/>,
+    element: <Landing/>,
   },
   {
     path : "/register",
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
   {
     path : '/home',
     element : <App/>
+  },
+  {
+    path : '/login',
+    element: <Login/>
   }
 ]);
 
