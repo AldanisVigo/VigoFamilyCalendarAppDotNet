@@ -1,5 +1,5 @@
 import logo from '../assets/logo.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import { useContext } from 'react'
 import LogoutButton from './logoutbutton';
@@ -16,6 +16,12 @@ const Login = () => {
   const [modalContent,setModalContent] = useState<string|undefined|null|any>()
   const [showModal,setShowModal] = useState<boolean>(false);
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    if(token){
+      navigate('/home')
+    }
+  },[navigate])
 
   const attemptLogin = async (e:any) => {
     e.preventDefault();

@@ -2,8 +2,8 @@ import './background.css'
 
 const Background = () => {
     return <>
-        <div id="flowing_background" className="z-0">
-            <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+        <div id="flowing_background fixed" className="z-0">
+            {/* <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
             <defs>
             <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stopColor="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stopColor="rgba(255, 0, 255, 0)"></stop></radialGradient>
             <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stopColor="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stopColor="rgba(255, 255, 0, 0)"></stop></radialGradient>
@@ -32,11 +32,11 @@ const Background = () => {
             </rect>
             <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
             </rect>
-            </svg>
+            </svg> */}
         </div>
-        <div id="flowing_background" style={{backgroundColor: 'rgba(0,0,0,0.7)'}}>
+        {/* <div id="flowing_background" style={{backgroundColor: 'rgba(0,0,0,0.7)'}}>
 
-        </div>
+        </div> */}
     </>
 }
 

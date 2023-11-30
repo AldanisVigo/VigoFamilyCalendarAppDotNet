@@ -1,5 +1,5 @@
 .header{
-    background-color: rgba(0,0,128,0.5);
+    background: linear-gradient(180deg, #A8957E 0%, rgba(141, 154, 247, 0.00) 100%);
     width: 100vw;
     height: 80px;
     /* border-bottom-left-radius: 30px; */

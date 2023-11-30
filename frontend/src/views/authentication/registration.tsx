@@ -1,8 +1,8 @@
 import ChildRegistration from "./child_registration";
 import ParentRegistration from "./parent_registration";
 import "./registration.css"
-import Header from "../components/header";
-import Background from "../components/background";
+import Header from "../../components/header";
+import Background from "../../components/background";
 const Registration = () => {
     return <>
         <Header/>

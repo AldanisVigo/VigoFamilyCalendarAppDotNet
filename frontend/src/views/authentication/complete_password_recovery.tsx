@@ -1,8 +1,8 @@
-import Background from "../components/background"
-import Header from "../components/header"
+import Background from "../../components/background"
+import Header from "../../components/header"
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from "react-router-dom"
-import '../App.css'
+import '../../App.css'
 
 const CompletePasswordRecovery = () => {
     const [searchParams] = useSearchParams();

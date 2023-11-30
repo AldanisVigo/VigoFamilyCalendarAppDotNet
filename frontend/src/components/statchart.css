@@ -1,0 +1,10 @@
+.statchart {
+    width: fit-content;
+    background: red;
+}
+
+/* div>svg {
+    width: 200px !important;
+    background: red;
+    fit: content-fit;
+} */

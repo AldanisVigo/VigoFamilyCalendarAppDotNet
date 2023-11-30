@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './parent_registration.css'
-import CustomModalDialog from '../components/custom_modal_dialog'
+import CustomModalDialog from '../../components/custom_modal_dialog'
 
 const ParentRegistration = () => {
     // const {token} = useContext(AppContext);
